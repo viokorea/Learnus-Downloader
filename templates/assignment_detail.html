@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ data.title }} - Assignment{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/semester/{{ semester }}">{{ semester }}</a></li>
+        <li class="breadcrumb-item"><a href="/course/{{ semester }}/{{ course }}">{{ course }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ week }} / {{ data.title }}</li>
+    </ol>
+</nav>
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white border-bottom py-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <h3 class="card-title text-primary mb-0 fw-bold">{{ data.title }}</h3>
+            <a href="{{ data.original_url }}" target="_blank" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-link-45deg"></i> Original
+            </a>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <h5 class="border-bottom pb-2 mb-3 text-secondary"><i class="bi bi-info-circle me-2"></i>Description</h5>
+        <div class="content mb-5" style="line-height: 1.8;">
+            {{ data.description_html | safe }}
+        </div>
+
+        {% if data.instructor_files %}
+        <div class="mb-4">
+            <h6 class="text-muted text-uppercase small fw-bold mb-2">Instructor Attachments</h6>
+            <div class="list-group">
+                {% for f in data.instructor_files %}
+                <a href="/course/{{ semester }}/{{ course }}/{{ week }}/{{ folder }}/{{ f.local_url }}"
+                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-file-earmark-arrow-down me-2"></i> {{ f.name }}</span>
+                    <i class="bi bi-download"></i>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <h5 class="border-bottom pb-2 mb-3 mt-5 text-secondary"><i class="bi bi-send me-2"></i>My Submission</h5>
+        {% if data.submission_files %}
+        <div class="list-group">
+            {% for f in data.submission_files %}
+            <a href="/course/{{ semester }}/{{ course }}/{{ week }}/{{ folder }}/{{ f.local_url }}"
+                class="list-group-item list-group-item-action list-group-item-success d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-check-circle me-2"></i> {{ f.name }}</span>
+                <span class="badge bg-success">Submitted</span>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="alert alert-light border">
+            <i class="bi bi-exclamation-circle me-2"></i> No submission files found.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

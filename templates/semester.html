@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ semester }}</li>
+    </ol>
+</nav>
+
+<h2 class="mb-4">Courses for {{ semester }}</h2>
+
+<div class="row">
+    {% for course in courses %}
+    <div class="col-md-6 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ course }}</h5>
+                <a href="/course/{{ semester }}/{{ course }}" class="btn btn-outline-primary stretched-link">Go to
+                    Course</a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12">
+        <div class="alert alert-info">No courses found for this semester.</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

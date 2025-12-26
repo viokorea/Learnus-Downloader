@@ -1,0 +1,8 @@
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+cookies.json
+Archive/
+cookies.pkl
+debug_video_dump.html

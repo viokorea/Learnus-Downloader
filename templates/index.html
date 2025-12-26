@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2 class="mb-4">Semesters</h2>
+        {% if semesters %}
+        <div class="list-group">
+            {% for sem in semesters %}
+            <a href="/semester/{{ sem }}"
+                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                <span class="fw-bold">{{ sem }}</span>
+                <span class="badge bg-primary rounded-pill">View</span>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="alert alert-warning">No archived semesters found in <code>Archive/</code>.</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
