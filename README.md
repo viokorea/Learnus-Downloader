@@ -43,13 +43,10 @@
 2.  **강좌 선택**: 로그인이 완료되면 백업할 강좌 목록이 표시됩니다. 원하는 강좌를 선택하세요.
 3.  **아카이빙**: 프로그램이 자동으로 자료를 수집합니다. 진행 상황은 터미널에 표시됩니다.
 4.  **뷰어 실행**:
-    *   다운로드가 완료된 후, 백업된 자료를 보려면 뷰어를 실행해야 합니다.
-    *   (현재 제공된 스크립트는 수집기(`main.py`)를 실행합니다. 뷰어는 아래 방법으로 실행하세요.)
-    
-    **뷰어 실행 방법**:
-    *   **Mac**: 터미널에서 `source venv/bin/activate` 입력 후 `python viewer.py` 실행
-    *   **Windows**: 터미널에서 `venv\Scripts\activate` 입력 후 `python viewer.py` 실행
-    *   브라우저에서 `http://localhost:5000` 주소로 접속하면 뷰어가 열립니다.
+    *   다운로드가 완료된 후, 백업된 자료를 보려면 전용 뷰어 실행 스크립트를 사용하세요.
+    *   **Mac**: 터미널에서 `chmod +x run_viewer_mac.sh` 후 `./run_viewer_mac.sh` 실행
+    *   **Windows**: `run_viewer_win.bat` 더블 클릭
+    *   브라우저가 자동으로 열리거나 `http://localhost:5000`으로 접속하면 됩니다.
 
 
 ## 보안 및 책임 (Security & Disclaimer)

@@ -3,13 +3,14 @@
 # Configuration
 VENV_DIR="venv"
 REQUIREMENTS="requirements.txt"
+SCRIPT_NAME="viewer.py"
 
 # Colors
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-echo -e "${BLUE}=== LearnUs Backup Tool Setup ===${NC}"
+echo -e "${BLUE}=== LearnUs Backup Viewer ===${NC}"
 
 # Check for Python 3
 if ! command -v python3 &> /dev/null; then
@@ -26,17 +27,16 @@ fi
 # Activate Virtual Environment
 source "$VENV_DIR/bin/activate"
 
-# Install Dependencies
+# Install Dependencies (Quietly to check if correct)
 if [ -f "$REQUIREMENTS" ]; then
-    echo -e "${GREEN}Installing dependencies...${NC}"
-    pip install -r "$REQUIREMENTS"
+    pip install -r "$REQUIREMENTS" > /dev/null 2>&1
 else
-    echo "requirements.txt not found!"
+    echo "requirements.txt not found! Please run the setup script first."
     exit 1
 fi
 
-echo -e "${GREEN}Setup complete!${NC}"
-echo -e "${BLUE}Starting Application...${NC}"
+echo -e "${GREEN}Starting Viewer...${NC}"
+echo -e "Open your browser to: http://localhost:5000"
 
-# Run Main Script
-python3 main.py
+# Run Viewer Script
+python3 "$SCRIPT_NAME"

@@ -1,7 +1,13 @@
 import os
-from flask import Flask, render_template, send_from_directory, abort
+from flask import Flask, render_template, send_from_directory, abort, request
+from urllib.parse import quote
 
 app = Flask(__name__)
+
+# Register URL quote filter
+@app.template_filter('url_quote')
+def url_quote_filter(s):
+    return quote(s)
 
 # Configuration
 ARCHIVE_DIR = os.path.join(os.getcwd(), 'Archive')
@@ -165,10 +171,30 @@ def assignment_detail(semester, course, week, folder):
         
     return render_template('assignment_detail.html', semester=semester, course=course, week=week, folder=folder, data=data)
 
+import unicodedata
+
 @app.route('/course/<semester>/<course>/<week>/<path:filename>')
 def file_serve(semester, course, week, filename):
     """Serve generic files from week folders"""
     file_path = os.path.join(ARCHIVE_DIR, semester, course, week)
+    
+    # Try exact match
+    full_path = os.path.join(file_path, filename)
+    if not os.path.exists(full_path):
+        # NFD normalization (common on Mac)
+        filename_nfd = unicodedata.normalize('NFD', filename)
+        full_path_nfd = os.path.join(file_path, filename_nfd)
+        if os.path.exists(full_path_nfd):
+            filename = filename_nfd
+        else:
+             # NFC normalization (common on Windows/Linux/Python)
+            filename_nfc = unicodedata.normalize('NFC', filename)
+            full_path_nfc = os.path.join(file_path, filename_nfc)
+            if os.path.exists(full_path_nfc):
+                filename = filename_nfc
+            else:
+                 abort(404)
+                 
     return send_from_directory(file_path, filename)
 
 if __name__ == '__main__':

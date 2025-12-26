@@ -6,9 +6,11 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/">Home</a></li>
-        <li class="breadcrumb-item"><a href="/semester/{{ semester }}">{{ semester }}</a></li>
-        <li class="breadcrumb-item"><a href="/course/{{ semester }}/{{ course }}">{{ course }}</a></li>
-        <li class="breadcrumb-item"><a href="/course/{{ semester }}/{{ course }}/announcements">Announcements</a></li>
+        <li class="breadcrumb-item"><a href="/semester/{{ semester|url_quote }}">{{ semester }}</a></li>
+        <li class="breadcrumb-item"><a href="/course/{{ semester|url_quote }}/{{ course|url_quote }}">{{ course }}</a>
+        </li>
+        <li class="breadcrumb-item"><a
+                href="/course/{{ semester|url_quote }}/{{ course|url_quote }}/announcements">Announcements</a></li>
         <li class="breadcrumb-item active" aria-current="page">View</li>
     </ol>
 </nav>
@@ -37,7 +39,7 @@
                 <h6 class="card-subtitle mb-3 text-muted fw-bold"><i class="bi bi-paperclip"></i> Attachments</h6>
                 <div class="list-group">
                     {% for att in data.attachments %}
-                    <a href="/course/{{ semester }}/{{ course }}/announcements/{{ att.local_url }}"
+                    <a href="/course/{{ semester|url_quote }}/{{ course|url_quote }}/announcements/{{ att.local_url|url_quote }}"
                         class="list-group-item list-group-item-action d-flex justify-content-between align-items-center bg-white">
                         <span><i class="bi bi-file-earmark me-2"></i> {{ att.name }}</span>
                         <i class="bi bi-download"></i>

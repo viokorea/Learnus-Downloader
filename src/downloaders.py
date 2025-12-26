@@ -147,12 +147,24 @@ class DownloaderCore:
     def _get_filename_from_header(self, headers):
         content_disposition = headers.get('Content-Disposition')
         if content_disposition:
-            fname = re.findall('filename="?([^";]+)"?', content_disposition)
-            if fname:
-                return unquote(fname[0])
-            fname_utf = re.findall(r"filename\*=UTF-8''(.+)", content_disposition)
+            # 1. Try filename*=UTF-8''... (RFC 5987)
+            fname_utf = re.findall(r"filename\*=UTF-8''(.+)", content_disposition, re.IGNORECASE)
             if fname_utf:
                 return unquote(fname_utf[0])
+            
+            # 2. Try filename="..."
+            fname = re.findall('filename="?([^";]+)"?', content_disposition)
+            if fname:
+                filename = unquote(fname[0])
+                # Check for encoding mismatch (Latin-1 vs UTF-8)
+                try:
+                    # Often server sends UTF-8 bytes but headers are interpreted as Latin-1
+                    filename = filename.encode('iso-8859-1').decode('utf-8')
+                except (UnicodeEncodeError, UnicodeDecodeError):
+                    # If it wasn't Latin-1 encoded UTF-8, use as is
+                    pass
+                return filename
+                
         return None
 
     def download_announcements(self, base_url, folder, dashboard_callback=None):
